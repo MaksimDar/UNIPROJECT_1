@@ -22,21 +22,21 @@ int main() {
     int countB = 0;
     int countC = 0;
 
-    printf("Welcome to our building!\n\n");
+    printf("Welcome to our building!");
 
     do {
-        printf("A. Use Elevator | B. Statistics | C. Elevators inspection | Q. Quit\n");
-        printf("Enter option: ");
+        printf("\n\nA. Use Elevator | B. Statistics | C. Elevators inspection | Q. Quit");
+        printf("\nEnter option: ");
         scanf(" %c", &option);
+        printf("\n");
         if (option != 'A' && option != 'a' && option != 'B' && option != 'b' && option != 'C' && option != 'c' && option != 'Q' && option != 'q') {
             printf("(ERROR) Invalid option\n\n");
-        }
-    } while (option != 'A' && option != 'a' && option != 'B' && option != 'b' && option != 'C' && option != 'c' && option != 'Q' && option != 'q');
-    
-  
-   
-    do   {
-        printf("From? ");
+        };
+        switch (option) {
+            case 'A':
+            case 'a': 
+                do   {
+                printf("From? ");
         scanf(" %c", &local);
     } while (local != 'A' && local != 'B' &&  local != 'G' &&  !( local >= '1' && local <= '5'));
     
@@ -275,5 +275,18 @@ int main() {
                 } 
             }
         }
+                
+
+            default:
+                break;
+        }
+        
+    } while (option != 'Q' && option != 'q');
+
+
     return 0;    
 } 
+    
+  
+   
+    
