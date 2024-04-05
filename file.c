@@ -12,9 +12,9 @@ int convertCharToInteger(char ch) {
         default:  ch= -2; break;
     }
     return ch;
-
 };
-int getStatus(int statusInt) {
+
+char getStatus(int statusInt) {
     char statusChar;
     switch(statusInt) {
         case -1:
@@ -49,11 +49,9 @@ int getStatus(int statusInt) {
             statusChar = 'A';
             printf("%c", statusChar);
             break;
-        default:
-            break;
+        default: break;
     };
     return statusChar;
-
 };
 
 int main() {
@@ -62,21 +60,29 @@ int main() {
     int countAlpha = 0;
     int countBeta = 0;
     int countGamma = 0;
-    char statusA = '2';
-    char statusB = '3';
-    char statusC = '5';
+    char statusA = 'G';
+    char statusB = 'G';
+    char statusC = 'G';
     int localInt, destinationInt, statusAInt,statusBInt,statusCInt;
     char elevatorAssigned;
     int distanceA;
     int distanceB;
     int distanceC;
-    int distanceAN;
-    int distanceBN;
-    int distanceCN;
     int i;
     int countA = 0;
     int countB = 0;
     int countC = 0;
+
+    int countRiderA = 0;
+    int countRiderB = 0;
+    int countRiderC = 0;
+
+    int countUpA = 0;
+    int countUpB = 0;
+    int countUpC = 0;
+    int countDownA = 0;
+    int countDownB = 0;
+    int countDownC = 0;
 
     printf("Welcome to our building!");
 
@@ -84,6 +90,7 @@ int main() {
         printf("\n\nA. Use Elevator | B. Statistics | C. Elevators inspection | Q. Quit\n");
         printf("Enter option: ");
         scanf(" %c", &option);
+        printf("\n\n");
         
         if (option != 'A' && option != 'a' && option != 'B' && option != 'b' && option != 'C' && option != 'c' && option != 'Q' && option != 'q') {
             printf("(ERROR) Invalid option\n\n");
@@ -148,7 +155,6 @@ int main() {
                     } while (local != 'A' && local != 'B' &&  local != 'G' &&  !( local >= '1' && local <= '5'));
                 };
 
-
                 statusAInt = convertCharToInteger(statusA);
                 statusBInt = convertCharToInteger(statusB);
                 statusCInt = convertCharToInteger(statusC);
@@ -157,50 +163,97 @@ int main() {
 
                 distanceA = statusAInt - localInt;
                 if (distanceA < 0) {
-                  distanceAN = -distanceA;
+                  distanceA = -distanceA;
                 }
                 distanceB = statusBInt - localInt;
                 if (distanceB < 0) {
-                    distanceBN = distanceB;
+                    distanceB = -distanceB;
                 }
                 distanceC = statusCInt - localInt;
                 if (distanceC < 0) {
-                    distanceCN = distanceC;
+                    distanceC = -distanceC;
                 }
-    
-                if ((distanceA < distanceB && distanceA < distanceC) || (distanceAN < distanceB && distanceAN < distanceC)) {
+                if (distanceA < distanceB && distanceA < distanceC) {
                     elevatorAssigned = 'A';
                 } else {
-                    if ((distanceB < distanceA && distanceB < distanceC) || (distanceBN < distanceAN && distanceBN < distanceC)) {
+                    if (distanceB < distanceA && distanceB < distanceC) {
                         elevatorAssigned = 'B';
                     } else {
-                        if ((distanceC < distanceA && distanceC < distanceB) || (distanceCN < distanceAN && distanceCN < distanceBN)) {
+                        if (distanceC < distanceA && distanceC < distanceB) {
                             elevatorAssigned = 'C';
-                        }
-                    }
-                }
+                        } else {
+                            if (distanceA == distanceB || distanceA == distanceC || distanceB == distanceC || distanceA == distanceB == distanceC) {
+                                if (distanceA == distanceB == distanceC ) {
+                                    if (countA == countB && countA == countC && countB == countC ) {
+                                        elevatorAssigned = 'A';
+                                    } else {
+                                        if (countA < countB && countA < countC) {
+                                             elevatorAssigned = 'A';
+                                        } else {
+                                            if (countB < countA && countB < countC) {
+                                                elevatorAssigned = 'B';
+                                            } else {
+                                                if (countC < countA && countC < countB) {
+                                                    elevatorAssigned = 'C';
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (distanceA == distanceB ) {
+                                        if (countA == countB) {
+                                            elevatorAssigned = 'A'; 
+                                        } else {
+                                            if (countA < countB) {
+                                               elevatorAssigned = 'A'; 
+                                            } else {
+                                                if (countB < countA) {
+                                                    elevatorAssigned = 'B';   
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (distanceA == distanceC) {
+                                            if (countA == countC) {
+                                                elevatorAssigned = 'A'; 
+                                            } else {
+                                                if (countA < countC) {
+                                                    elevatorAssigned = 'A'; 
+                                                } else {
+                                                    if (countC < countA) {
+                                                        elevatorAssigned = 'C';
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            if (distanceB == distanceC) {
+                                                if (countB == countC) {
+                                                   elevatorAssigned = 'B'; 
+                                                } else {
+                                                    if (countB < countC) {
+                                                        elevatorAssigned = 'B';
+                                                    } else {
+                                                        if (countC < countB) {
+                                                            elevatorAssigned = 'C';
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            };
+                        };
+                    };
+                } 
+                
+
                 if (elevatorAssigned == 'A') {
                     printf("Elevator Alpha assigned\n");
+                    countRiderA++;
                     statusA = getStatus(statusAInt);
-                    // switch(statusAInt) {
-                    //     case 0:
-                    //         statusA = 'G';
-                    //         printf("%c", statusA);
-                    //         break;
-                    //     case -1:
-                    //         statusA = 'B';
-                    //         printf("%c", statusA);
-                    //         break;
-                    //     case 6:
-                    //         statusA = 'A';
-                    //         printf("%c", statusA);
-                    //         break;
-                    //     default:
-                    //         printf("%c", statusA);
-                    //         break;
-                    // }
                     if (localInt > statusAInt) {
-                        for (int i = statusAInt+1; i <= localInt; i++) {
+                        for (int i = statusAInt+1; i <= localInt; i++) {  
                             switch(i) {
                                 case -1: printf("..B"); break;
                                 case 0: printf("..G"); break;
@@ -215,7 +268,7 @@ int main() {
                         }
                     };  
                     if (localInt < statusAInt) {
-                        for (int i = statusAInt-1; i >= localInt; i--) {
+                        for (int i = statusAInt-1; i >= localInt; i--) { 
                             switch(i) {
                                 case -1: printf("..B"); break;
                                 case 0: printf("..G"); break;
@@ -231,6 +284,7 @@ int main() {
                     }
                     if (destinationInt > localInt) {
                         printf(" Going up! ");
+                        countUpA++;
                         switch(localInt) {
                             case -1: printf("B"); break;
                             case 0: printf("G"); break;
@@ -254,6 +308,7 @@ int main() {
                                 case 6: printf("..A"); break;
                                 default: break; 
                             };  
+                            countA++;
                         };
                         switch (destinationInt) {
                             case -1: statusA = 'B'; break;
@@ -271,6 +326,7 @@ int main() {
                     
                     if (destinationInt < localInt) {
                         printf(" Going down! ");
+                        countDownA++;
                         switch(localInt) {
                             case -1: printf("B"); break;
                             case 0: printf("G"); break;
@@ -283,7 +339,7 @@ int main() {
                             default: break; 
                         }
                         for (i = localInt-1; i >= destinationInt; i--) {
-                                switch(i) {
+                            switch(i) {
                                 case -1: printf("..B"); break;
                                 case 0: printf("..G"); break;
                                 case 1: printf("..1"); break;
@@ -294,7 +350,7 @@ int main() {
                                 case 6: printf("..A"); break;
                                 default: break; 
                             }
-                             
+                            countA++;     
                         };
                         switch (destinationInt) {
                             case -1: statusA = 'B'; break;
@@ -308,12 +364,254 @@ int main() {
                             default: break;
                         }
                     }
-                } 
+                } else {
+                    if (elevatorAssigned == 'B') {
+                        printf("Elevator Beta assigned\n");
+                        countRiderB++;
+                        statusB = getStatus(statusBInt);
+                        if (localInt > statusBInt) {
+                            for (int i = statusBInt+1; i <= localInt; i++) {
+                                switch(i) {
+                                    case -1: printf("..B"); break;
+                                    case 0: printf("..G"); break;
+                                    case 1: printf("..1"); break;
+                                    case 2: printf("..2"); break;
+                                    case 3: printf("..3"); break;
+                                    case 4: printf("..4"); break;
+                                    case 5: printf("..5"); break;
+                                    case 6: printf("..A"); break;
+                                    default: break; 
+                                }
+                            }
+                        };  
+                        if (localInt < statusBInt) {
+                            for (int i = statusBInt-1; i >= localInt; i--) {
+                                switch(i) {
+                                    case -1: printf("..B"); break;
+                                    case 0: printf("..G"); break;
+                                    case 1: printf("..1"); break;
+                                    case 2: printf("..2"); break;
+                                    case 3: printf("..3"); break;
+                                    case 4: printf("..4"); break;
+                                    case 5: printf("..5"); break;
+                                    case 6: printf("..A"); break;
+                                    default: break; 
+                                }
+                            }
+                        }
+                        if (destinationInt > localInt) {
+                            printf(" Going up! ");
+                            countUpB++;
+                            switch(localInt) {
+                                case -1: printf("B"); break;
+                                case 0: printf("G"); break;
+                                case 1: printf("1"); break;
+                                case 2: printf("2"); break;
+                                case 3: printf("3"); break;
+                                case 4: printf("4"); break;
+                                case 5: printf("5"); break;
+                                case 6: printf("A"); break;
+                                default: break; 
+                            }
+                            for (i = localInt+1; i <= destinationInt; i++) {
+                                switch(i) {
+                                    case -1: printf("..B"); break;
+                                    case 0: printf("..G"); break;
+                                    case 1: printf("..1"); break;
+                                    case 2: printf("..2"); break;
+                                    case 3: printf("..3"); break;
+                                    case 4: printf("..4"); break;
+                                    case 5: printf("..5"); break;
+                                    case 6: printf("..A"); break;
+                                    default: break; 
+                                };  
+                                countB++;
+                            };
+                            switch (destinationInt) {
+                                case -1: statusB = 'B'; break;
+                                case 0: statusB = 'G'; break;
+                                case 1: statusB = '1'; break;
+                                case 2: statusB = '2'; break;
+                                case 3: statusB = '3'; break;
+                                case 4: statusB = '4'; break;
+                                case 5: statusB = '5'; break;
+                                case 6: statusB = 'A'; break;
+                                default: break;
+                            }
+            
+                        }
+                    
+                        if (destinationInt < localInt) {
+                            printf(" Going down! ");
+                            countDownB++;
+                            switch(localInt) {
+                                case -1: printf("B"); break;
+                                case 0: printf("G"); break;
+                                case 1: printf("1"); break;
+                                case 2: printf("2"); break;
+                                case 3: printf("3"); break;
+                                case 4: printf("4"); break;
+                                case 5: printf("5"); break;
+                                case 6: printf("A"); break;
+                                default: break; 
+                            }
+                            for (i = localInt-1; i >= destinationInt; i--) {
+                                switch(i) {
+                                    case -1: printf("..B"); break;
+                                    case 0: printf("..G"); break;
+                                    case 1: printf("..1"); break;
+                                    case 2: printf("..2"); break;
+                                    case 3: printf("..3"); break;
+                                    case 4: printf("..4"); break;
+                                    case 5: printf("..5"); break;
+                                    case 6: printf("..A"); break;
+                                    default: break; 
+                                };
+                                countB++;     
+                            };
+                            switch (destinationInt) {
+                                case -1: statusB = 'B'; break;
+                                case 0: statusB = 'G'; break;
+                                case 1: statusB = '1'; break;
+                                case 2: statusB = '2'; break;
+                                case 3: statusB = '3'; break;
+                                case 4: statusB = '4'; break;
+                                case 5: statusB = '5'; break;
+                                case 6: statusB = 'A'; break;
+                                default: break;
+                            }
+                        }
+                    } else {
+                        if (elevatorAssigned == 'C') {
+                            countRiderC++;
+                            printf("Elevator Gamma assigned\n");
+                            statusC = getStatus(statusCInt);
+                            if (localInt > statusCInt) {
+                                for (int i = statusCInt+1; i <= localInt; i++) {
+                                    switch(i) {
+                                        case -1: printf("..B"); break;
+                                        case 0: printf("..G"); break;
+                                        case 1: printf("..1"); break;
+                                        case 2: printf("..2"); break;
+                                        case 3: printf("..3"); break;
+                                        case 4: printf("..4"); break;
+                                        case 5: printf("..5"); break;
+                                        case 6: printf("..A"); break;
+                                        default: break; 
+                                    }
+                                }
+                            };  
+                            if (localInt < statusCInt) {
+                                for (int i = statusCInt-1; i >= localInt; i--) {
+                                    switch(i) {
+                                        case -1: printf("..B"); break;
+                                        case 0: printf("..G"); break;
+                                        case 1: printf("..1"); break;
+                                        case 2: printf("..2"); break;
+                                        case 3: printf("..3"); break;
+                                        case 4: printf("..4"); break;
+                                        case 5: printf("..5"); break;
+                                        case 6: printf("..A"); break;
+                                        default: break; 
+                                    };
+                                }
+                            }
+                            if (destinationInt > localInt) {
+                                printf(" Going up! ");
+                                countUpC++;
+                                switch(localInt) {
+                                    case -1: printf("B"); break;
+                                    case 0: printf("G"); break;
+                                    case 1: printf("1"); break;
+                                    case 2: printf("2"); break;
+                                    case 3: printf("3"); break;
+                                    case 4: printf("4"); break;
+                                    case 5: printf("5"); break;
+                                    case 6: printf("A"); break;
+                                    default: break; 
+                                }
+                                for (i = localInt+1; i <= destinationInt; i++) {
+                                    switch(i) {
+                                        case -1: printf("..B"); break;
+                                        case 0: printf("..G"); break;
+                                        case 1: printf("..1"); break;
+                                        case 2: printf("..2"); break;
+                                        case 3: printf("..3"); break;
+                                        case 4: printf("..4"); break;
+                                        case 5: printf("..5"); break;
+                                        case 6: printf("..A"); break;
+                                        default: break; 
+                                    };  
+                                    countC++;
+                                };
+                                switch (destinationInt) {
+                                    case -1: statusC = 'B'; break;
+                                    case 0: statusC = 'G'; break;
+                                    case 1: statusC = '1'; break;
+                                    case 2: statusC = '2'; break;
+                                    case 3: statusC = '3'; break;
+                                    case 4: statusC = '4'; break;
+                                    case 5: statusC = '5'; break;
+                                    case 6: statusC = 'A'; break;
+                                    default: break;
+                                }
+                            }
+                    
+                            if (destinationInt < localInt) {
+                                printf(" Going down! ");
+                                countDownC++;
+                                switch(localInt) {
+                                    case -1: printf("B"); break;
+                                    case 0: printf("G"); break;
+                                    case 1: printf("1"); break;
+                                    case 2: printf("2"); break;
+                                    case 3: printf("3"); break;
+                                    case 4: printf("4"); break;
+                                    case 5: printf("5"); break;
+                                    case 6: printf("A"); break;
+                                    default: break; 
+                                }
+                                for (i = localInt-1; i >= destinationInt; i--) {
+                                    switch(i) {
+                                        case -1: printf("..B"); break;
+                                        case 0: printf("..G"); break;
+                                        case 1: printf("..1"); break;
+                                        case 2: printf("..2"); break;
+                                        case 3: printf("..3"); break;
+                                        case 4: printf("..4"); break;
+                                        case 5: printf("..5"); break;
+                                        case 6: printf("..A"); break;
+                                        default: break; 
+                                    }
+                                    countC++;
+                                };
+
+                                switch (destinationInt) {
+                                    case -1: statusC = 'B'; break;
+                                    case 0: statusC = 'G'; break;
+                                    case 1: statusC = '1'; break;
+                                    case 2: statusC = '2'; break;
+                                    case 3: statusC = '3'; break;
+                                    case 4: statusC = '4'; break;
+                                    case 5: statusC = '5'; break;
+                                    case 6: statusC = 'A'; break;
+                                    default: break;
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 'B':
+            case 'b': 
+                printf("\n\nElevators Statistics\n\n");
+                printf("ALPHA: %d rides (%d-%d) and %d floors traveled\n", countRiderA, countUpA, countDownA, countA);
+                printf("BETA: %d rides (%d-%d) and %d floors traveled\n", countRiderB, countUpB, countDownB, countB);
+                printf("GAMMA: %d rides (%d-%d) and %d floors traveled\n",countRiderC, countUpC, countDownC, countC );
+                
+            default: break;  
         }
     } while (option != 'Q' && option != 'q');
-    
-  
-
     return 0;    
 } 
 
