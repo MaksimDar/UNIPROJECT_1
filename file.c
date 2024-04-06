@@ -1058,7 +1058,11 @@ int main()
             printf("ALPHA: %d rides (%d-%d) and %d floors traveled\n", countRiderA, countUpA, countDownA, countA);
             printf("BETA: %d rides (%d-%d) and %d floors traveled\n", countRiderB, countUpB, countDownB, countB);
             printf("GAMMA: %d rides (%d-%d) and %d floors traveled\n", countRiderC, countUpC, countDownC, countC);
-
+            break;
+        case 'C':
+        case 'c':
+            printf("C chapter");
+            break;
         default:
             break;
         }
