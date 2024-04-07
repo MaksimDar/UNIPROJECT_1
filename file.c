@@ -269,7 +269,7 @@ int main()
             }
             else
             {
-                if (distanceB < distanceA && distanceB < distanceC)
+                if ((distanceB < distanceA && distanceB < distanceC))
                 {
                     elevatorAssigned = 'B';
                 }
