@@ -283,24 +283,7 @@ int main()
                 };
             }
 
-            // if ((distanceA < distanceB && distanceA < distanceC) || (distanceA == distanceB == distanceC && countA == countB && ((countA == countC && countB == countC) || (countA < countB && countA < countC))) || (distanceA == distanceB && (countA == countB || countA < countB)) || (distanceA == distanceC && (countA == countB || countA < countC)))
-            // {
-            //     elevatorAssigned = 'A';
-            // }
-            // else
-            // {
-            //     if ((distanceB < distanceA && distanceB < distanceC) || (distanceA == distanceB == distanceC && (countB < countA && countB < countC)) || (distanceA == distanceB && countB < countA) || (distanceB == distanceC && (countB == countC || countB < countC)))
-            //     {
-            //         elevatorAssigned = 'B';
-            //     }
-            //     else
-            //     {
-            //         if ((distanceC < distanceA && distanceC < distanceB) || (distanceA == distanceB == distanceC && (countC < countA && countC < countB)) || (distanceA == distanceC && countC < countA) || (distanceB == distanceC && countC < countB))
-            //         {
-            //             elevatorAssigned = 'C';
-            //         }
-            //     };
-            // }
+           
 
             if (elevatorAssigned == 'A')
             {
