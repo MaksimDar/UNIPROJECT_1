@@ -122,7 +122,7 @@ int main()
     char statusB = 'G';
     char statusC = 'G';
     int localInt, destinationInt, statusAInt, statusBInt, statusCInt;
-    char elevatorAssigned;
+    char elevatorAssigned = '\0';
     int distanceA;
     int distanceB;
     int distanceC;
@@ -263,130 +263,45 @@ int main()
             {
                 distanceC = -distanceC;
             }
-            if (distanceA < distanceB && distanceA < distanceC)
+            if (elevatorAssigned == '\0')
             {
-                elevatorAssigned = 'A';
-            }
-            else
-            {
-                if ((distanceB < distanceA && distanceB < distanceC))
+                if ((distanceA < distanceB && distanceA < distanceC) || (distanceA == distanceB && distanceA == distanceC && countA == countB && ((countA == countC && countB == countC) || (countA < countB && countA < countC))) || (distanceA == distanceB && (countA == countB || countA < countB)) || (distanceA == distanceC && (countA == countB || countA < countC)))
                 {
-                    elevatorAssigned = 'B';
+                    elevatorAssigned = 'A';
                 }
                 else
                 {
-                    if (distanceC < distanceA && distanceC < distanceB)
+                    if ((distanceB < distanceA && distanceB < distanceC) || (distanceA == distanceB && distanceA == distanceC && (countB < countA && countB < countC)) || (distanceA == distanceB && countB < countA) || (distanceB == distanceC && (countB == countC || countB < countC)))
                     {
-                        elevatorAssigned = 'C';
+                        elevatorAssigned = 'B';
                     }
                     else
                     {
-                        if (distanceA == distanceB || distanceA == distanceC || distanceB == distanceC || distanceA == distanceB == distanceC)
+                        if ((distanceC < distanceA && distanceC < distanceB) || (distanceA == distanceB && distanceA == distanceC && (countC < countA && countC < countB)) || (distanceA == distanceC && countC < countA) || (distanceB == distanceC && countC < countB))
                         {
-                            if (distanceA == distanceB == distanceC)
-                            {
-                                if (countA == countB && countA == countC && countB == countC)
-                                {
-                                    elevatorAssigned = 'A';
-                                }
-                                else
-                                {
-                                    if (countA < countB && countA < countC)
-                                    {
-                                        elevatorAssigned = 'A';
-                                    }
-                                    else
-                                    {
-                                        if (countB < countA && countB < countC)
-                                        {
-                                            elevatorAssigned = 'B';
-                                        }
-                                        else
-                                        {
-                                            if (countC < countA && countC < countB)
-                                            {
-                                                elevatorAssigned = 'C';
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (distanceA == distanceB)
-                                {
-                                    if (countA == countB)
-                                    {
-                                        elevatorAssigned = 'A';
-                                    }
-                                    else
-                                    {
-                                        if (countA < countB)
-                                        {
-                                            elevatorAssigned = 'A';
-                                        }
-                                        else
-                                        {
-                                            if (countB < countA)
-                                            {
-                                                elevatorAssigned = 'B';
-                                            }
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if (distanceA == distanceC)
-                                    {
-                                        if (countA == countC)
-                                        {
-                                            elevatorAssigned = 'A';
-                                        }
-                                        else
-                                        {
-                                            if (countA < countC)
-                                            {
-                                                elevatorAssigned = 'A';
-                                            }
-                                            else
-                                            {
-                                                if (countC < countA)
-                                                {
-                                                    elevatorAssigned = 'C';
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (distanceB == distanceC)
-                                        {
-                                            if (countB == countC)
-                                            {
-                                                elevatorAssigned = 'B';
-                                            }
-                                            else
-                                            {
-                                                if (countB < countC)
-                                                {
-                                                    elevatorAssigned = 'B';
-                                                }
-                                                else
-                                                {
-                                                    if (countC < countB)
-                                                    {
-                                                        elevatorAssigned = 'C';
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        };
+                            elevatorAssigned = 'C';
+                        }
                     };
-                };
+                }
             }
+            // if ((distanceA < distanceB && distanceA < distanceC) || (distanceA == distanceB == distanceC && countA == countB && ((countA == countC && countB == countC) || (countA < countB && countA < countC))) || (distanceA == distanceB && (countA == countB || countA < countB)) || (distanceA == distanceC && (countA == countB || countA < countC)))
+            // {
+            //     elevatorAssigned = 'A';
+            // }
+            // else
+            // {
+            //     if ((distanceB < distanceA && distanceB < distanceC) || (distanceA == distanceB == distanceC && (countB < countA && countB < countC)) || (distanceA == distanceB && countB < countA) || (distanceB == distanceC && (countB == countC || countB < countC)))
+            //     {
+            //         elevatorAssigned = 'B';
+            //     }
+            //     else
+            //     {
+            //         if ((distanceC < distanceA && distanceC < distanceB) || (distanceA == distanceB == distanceC && (countC < countA && countC < countB)) || (distanceA == distanceC && countC < countA) || (distanceB == distanceC && countC < countB))
+            //         {
+            //             elevatorAssigned = 'C';
+            //         }
+            //     };
+            // }
 
             if (elevatorAssigned == 'A')
             {
