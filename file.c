@@ -105,7 +105,12 @@ int destinationStatus(int destination)
     }
     return status;
 };
-
+int calculatePrice(int floors)
+{
+    int times_exceeded = (floors - 11) / FLOORS_FOR_INSPECTION;
+    int total_price = INSPECTION_PRICE * times_exceeded;
+    return total_price;
+}
 int main()
 {
     char option;
@@ -123,8 +128,15 @@ int main()
     int distanceC;
     int i;
     int countA = 0;
+    float countAFloat;
     int countB = 0;
+    float countBFloat;
     int countC = 0;
+    float countCFloat;
+
+    float priceA;
+    float priceB;
+    float priceC;
 
     int countRiderA = 0;
     int countRiderB = 0;
@@ -137,6 +149,17 @@ int main()
     int countDownB = 0;
     int countDownC = 0;
 
+    char inspection;
+
+    int inspectionStatusA = 0;
+    int inspectionStatusB = 0;
+    int inspectionStatusC = 0;
+
+    float sum;
+    float differenceA;
+    float differenceB;
+    float differenceC;
+
     printf("Welcome to our building!");
 
     do
@@ -148,7 +171,7 @@ int main()
 
         if (option != 'A' && option != 'a' && option != 'B' && option != 'b' && option != 'C' && option != 'c' && option != 'Q' && option != 'q')
         {
-            printf("(ERROR) Invalid option\n\n");
+            printf("(ERROR) Invalid option");
         }
         switch (option)
         {
@@ -1061,7 +1084,127 @@ int main()
             break;
         case 'C':
         case 'c':
-            printf("C chapter");
+            if (countA >= FLOORS_FOR_INSPECTION || countB >= FLOORS_FOR_INSPECTION || countC >= FLOORS_FOR_INSPECTION)
+            {
+                if (countA >= FLOORS_FOR_INSPECTION)
+                {
+                    printf("Elevator Alpha: inspection required\n");
+                    inspectionStatusA = 1;
+                    countAFloat = countA;
+                    priceA = calculatePrice(countA);
+                }
+
+                if (countB >= FLOORS_FOR_INSPECTION)
+                {
+                    printf("Elevator Beta: inspection required\n");
+                    inspectionStatusB = 1;
+                    countBFloat = countB;
+                    priceB = calculatePrice(countB);
+                }
+
+                if (countC >= FLOORS_FOR_INSPECTION)
+                {
+                    inspectionStatusC = 1;
+                    printf("Elevator Gama: inspection required\n");
+                    countCFloat = countB;
+                    priceC = calculatePrice(countC);
+                };
+
+                printf("Perform inspection? ");
+                scanf(" %c", &inspection);
+
+                if (inspection == 'Y' || inspection == 'y' || inspection == 'N' || inspection == 'n')
+                {
+                    printf("\n");
+                    if (inspection == 'Y' || inspection == 'y')
+                    {
+                        if (inspectionStatusA == 1 && inspectionStatusB == 1 && inspectionStatusC == 1)
+                        {
+                            printf("Elevator Alpha inspected! (%.f euros)\n", priceA);
+                            printf("Elevator Beta inspected! (%.f euros)\n", priceB);
+                            printf("Elevator Gama inspected! (%.f euros)\n", priceC);
+                            countA = 0;
+                            countB = 0;
+                            countC = 0;
+                            sum = priceA + priceB + priceC;
+                            inspectionStatusA = 0;
+                            inspectionStatusB = 0;
+                            inspectionStatusC = 0;
+                            printf("\nAccumulated %.f", sum);
+                        }
+                        else
+                        {
+                            if (inspectionStatusA == 1 && inspectionStatusB == 1)
+                            {
+                                printf("Elevator Alpha inspected! (%.f euros)\n", priceA);
+                                printf("Elevator Beta inspected! (%.f euros)\n", priceB);
+                                countA = 0;
+                                countB = 0;
+                                sum = priceA + priceB;
+                                inspectionStatusA = 0;
+                                inspectionStatusB = 0;
+                                printf("\nAccumulated %.f", sum);
+                            }
+                            else
+                            {
+                                if (inspectionStatusA == 1 && inspectionStatusC == 1)
+                                {
+                                    printf("Elevator Alpha inspected! (%.f euros)\n", priceA);
+                                    printf("Elevator Gama inspected! (%.f euros)\n", priceC);
+                                    countA = 0;
+                                    countC = 0;
+                                    sum = priceA + priceC;
+                                    inspectionStatusA = 0;
+                                    inspectionStatusC = 0;
+                                    printf("\nAccumulated %.f", sum);
+                                }
+                                else
+                                {
+                                    if (inspectionStatusB == 1 && inspectionStatusC == 1)
+                                    {
+                                        printf("Elevator Beta inspected! (%.f euros)\n", priceB);
+                                        printf("Elevator Gama inspected! (%.f euros)\n", priceC);
+                                        countB = 0;
+                                        countC = 0;
+                                        sum = priceB + priceC;
+                                        inspectionStatusB = 0;
+                                        inspectionStatusC = 0;
+                                        printf("\nAccumulated %.f", sum);
+                                    }
+                                    else
+                                    {
+                                        if (inspectionStatusA == 1)
+                                        {
+                                            printf("Elevator Alpha inspected! (%.f euros)\n", priceA);
+                                            countA = 0;
+                                            sum = priceA;
+                                            inspectionStatusA = 0;
+                                            printf("\nAccumulated %.f", sum);
+                                        };
+                                        if (inspectionStatusB == 1)
+                                        {
+                                            printf("Elevator Beta inspected! (%.f euros)\n", priceB);
+                                            countB = 0;
+                                            sum = priceB;
+                                            inspectionStatusB = 0;
+                                            printf("\nAccumulated %.f", sum);
+                                        }
+                                        if (inspectionStatusC == 1)
+                                        {
+                                            printf("Elevator Gama inspected! (%.f euros)\n", priceC);
+                                            countC = 0;
+                                            sum = priceC;
+                                            inspectionStatusC = 0;
+                                            printf("\nAccumulated %.f", sum);
+                                        }
+                                    }
+                                }
+                            }
+                        };
+                    }
+                }
+            }
+
             break;
         default:
             break;
