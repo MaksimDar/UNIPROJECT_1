@@ -111,6 +111,7 @@ int calculatePrice(int floors)
     int total_price = INSPECTION_PRICE * times_exceeded;
     return total_price;
 }
+
 int main()
 {
     char option;
@@ -122,7 +123,7 @@ int main()
     char statusB = 'G';
     char statusC = 'G';
     int localInt, destinationInt, statusAInt, statusBInt, statusCInt;
-    char elevatorAssigned;
+    char elevatorAssigned = 'M';
     int distanceA;
     int distanceB;
     int distanceC;
@@ -264,26 +265,89 @@ int main()
                 distanceC = -distanceC;
             }
 
-            if (distanceA < distanceB && distanceA < distanceC)
+            if (elevatorAssigned == 'M' && distanceA < distanceB && distanceA < distanceC)
             {
                 elevatorAssigned = 'A';
             }
-            else
+
+            if (elevatorAssigned == 'M' && distanceB < distanceA && distanceB < distanceC)
             {
-                if (distanceB < distanceA && distanceB < distanceC)
+                elevatorAssigned = 'B';
+            }
+
+            if (elevatorAssigned == 'M' && distanceC < distanceA && distanceC < distanceB)
+            {
+                elevatorAssigned = 'C';
+            }
+
+            if (elevatorAssigned == 'M' && distanceA == distanceB && distanceA == distanceC)
+            {
+                if (countA <= countB && countA <= countC)
+                {
+                    elevatorAssigned = 'A';
+                }
+                else
+                {
+                    if (countB < countA && countB <= countC)
+                    {
+                        elevatorAssigned = 'B';
+                    }
+                    else
+                    {
+                        elevatorAssigned = 'C';
+                    }
+                }
+            }
+
+            if (elevatorAssigned == 'M' && distanceA == distanceB && countA < countB)
+            {
+                if (countA < countB)
+                {
+                    elevatorAssigned = 'A';
+                }
+                else
+                {
+                    if (countB < countA)
+                    {
+                        elevatorAssigned = 'B';
+                    }
+                }
+            }
+
+            if (elevatorAssigned == 'M' && distanceA == distanceC)
+            {
+                if (countA < countC)
+                {
+                    elevatorAssigned = 'A';
+                }
+                else
+                {
+                    if (countC < countA)
+                    {
+                        elevatorAssigned = 'C';
+                    }
+                }
+            }
+
+            if (elevatorAssigned == 'M' && distanceB == distanceC)
+            {
+                if (countB < countC)
                 {
                     elevatorAssigned = 'B';
                 }
                 else
                 {
-                    if ((distanceC < distanceA && distanceC < distanceB))
+                    if (countC < countB)
                     {
                         elevatorAssigned = 'C';
                     }
-                };
-            }
+                }
+            };
 
-           
+            if (elevatorAssigned == 'M')
+            {
+                elevatorAssigned = 'A';
+            }
 
             if (elevatorAssigned == 'A')
             {
