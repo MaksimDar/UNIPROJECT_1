@@ -1,7 +1,7 @@
 #include <stdio.h>
 #define FLOORS_FOR_INSPECTION 12
 #define INSPECTION_PRICE 150
-int convertCharToInteger(char ch)
+int convertChar(char ch)
 {
     switch (ch)
     {
@@ -71,7 +71,7 @@ char getStatus(int statusInt)
     return statusChar;
 };
 
-void upToLocal(int status, int local)
+void upLocal(int status, int local)
 {
     for (int i = status + 1; i <= local; i++)
     {
@@ -108,7 +108,7 @@ void upToLocal(int status, int local)
     printf(" ");
 }
 
-void downToLocal(int status, int local)
+void downLocal(int status, int local)
 {
     for (int i = status - 1; i >= local; i--)
     {
@@ -215,7 +215,17 @@ int destinationStatus(int destination)
 
 int calculatePrice(int floors)
 {
-    int times_exceeded = (floors - 11) / FLOORS_FOR_INSPECTION;
+    float times_exceeded = (floors - FLOORS_FOR_INSPECTION) / FLOORS_FOR_INSPECTION;
+
+    if (times_exceeded >= 0 && times_exceeded < 1)
+    {
+        times_exceeded = 1;
+    }
+    else
+    {
+        times_exceeded = times_exceeded + 1;
+    }
+
     int total_price = INSPECTION_PRICE * times_exceeded;
     return total_price;
 }
@@ -224,49 +234,43 @@ int main()
 {
     char option;
     char local, destination;
-    int countAlpha = 0;
-    int countBeta = 0;
-    int countGamma = 0;
-    char statusA = 'G';
-    char statusB = 'G';
-    char statusC = 'G';
-    int localInt, destinationInt, statusAInt, statusBInt, statusCInt;
-    int distanceA;
-    int distanceB;
-    int distanceC;
+    char status_a = 'G';
+    char status_b = 'G';
+    char status_g = 'G';
+    int local_int, destination_int, status_int1, status_int2, status_int3;
+    int distance_a;
+    int distance_b;
+    int distance_c;
     int i;
-    int countA = 0;
-    float countAFloat;
-    int countB = 0;
-    float countBFloat;
-    int countC = 0;
-    float countCFloat;
+    int count_a = 0;
+    int count_b = 0;
 
-    float priceA;
-    float priceB;
-    float priceC;
+    int count_g = 0;
 
-    int countRiderA = 0;
-    int countRiderB = 0;
-    int countRiderC = 0;
+    float price_a;
+    float price_b;
+    float price_g;
 
-    int countUpA = 0;
-    int countUpB = 0;
-    int countUpC = 0;
-    int countDownA = 0;
-    int countDownB = 0;
-    int countDownC = 0;
+    int counter_rides1 = 0;
+    int counter_rides2 = 0;
+    int counter_rides3 = 0;
+
+    int count_up1 = 0;
+    int count_up2 = 0;
+    int count_up3 = 0;
+    int count_down1 = 0;
+    int count_down2 = 0;
+    int count_down3 = 0;
 
     char inspection;
 
-    int inspectionStatusA = 0;
-    int inspectionStatusB = 0;
-    int inspectionStatusC = 0;
+    int inspection_status1 = 0;
+    int inspection_status2 = 0;
+    int inspection_status3 = 0;
 
     float sum;
-    float differenceA;
-    float differenceB;
-    float differenceC;
+    float total_sum;
+    float prev = 0;
 
     printf("Welcome to our building!");
 
@@ -275,16 +279,21 @@ int main()
         printf("\n\nA. Use Elevator | B. Statistics | C. Elevators inspection | Q. Quit\n");
         printf("Enter option: ");
         scanf(" %c", &option);
-        printf("\n");
 
         if (option != 'A' && option != 'a' && option != 'B' && option != 'b' && option != 'C' && option != 'c' && option != 'Q' && option != 'q')
         {
             printf("(ERROR) Invalid option");
         }
+
+        if (option == 'Q' && option == 'q')
+        {
+            printf("See you later");
+        }
         switch (option)
         {
         case 'A':
         case 'a':
+            printf("\n");
             do
             {
                 printf("From? ");
@@ -350,93 +359,89 @@ int main()
                 } while (local != 'A' && local != 'B' && local != 'G' && !(local >= '1' && local <= '5'));
             };
 
-            statusAInt = convertCharToInteger(statusA);
-            statusBInt = convertCharToInteger(statusB);
-            statusCInt = convertCharToInteger(statusC);
-            localInt = convertCharToInteger(local);
-            destinationInt = convertCharToInteger(destination);
+            status_int1 = convertChar(status_a);
+            status_int2 = convertChar(status_b);
+            status_int3 = convertChar(status_g);
+            local_int = convertChar(local);
+            destination_int = convertChar(destination);
 
-            distanceA = statusAInt - localInt;
-            if (distanceA < 0)
+            distance_a = status_int1 - local_int;
+            if (distance_a < 0)
             {
-                distanceA = -distanceA;
+                distance_a = -distance_a;
             }
-            distanceB = statusBInt - localInt;
-            if (distanceB < 0)
+            distance_b = status_int2 - local_int;
+            if (distance_b < 0)
             {
-                distanceB = -distanceB;
+                distance_b = -distance_b;
             }
-            distanceC = statusCInt - localInt;
-            if (distanceC < 0)
+            distance_c = status_int3 - local_int;
+            if (distance_c < 0)
             {
-                distanceC = -distanceC;
+                distance_c = -distance_c;
             }
-            char elevatorAssigned = 'M';
-            if (elevatorAssigned == 'M' && distanceA < distanceB && distanceA < distanceC)
+            char elevator_assigned = 'M';
+            if (elevator_assigned == 'M' && distance_a < distance_b && distance_a < distance_c)
             {
-                elevatorAssigned = 'A';
-            }
-
-            if (elevatorAssigned == 'M' && distanceB < distanceA && distanceB < distanceC)
-            {
-                elevatorAssigned = 'B';
+                elevator_assigned = 'A';
             }
 
-            if (elevatorAssigned == 'M' && distanceC < distanceA && distanceC < distanceB)
+            if (elevator_assigned == 'M' && distance_b < distance_a && distance_b < distance_c)
             {
-                elevatorAssigned = 'C';
+                elevator_assigned = 'B';
             }
 
-            if (elevatorAssigned == 'M' && distanceA == distanceB)
+            if (elevator_assigned == 'M' && distance_c < distance_a && distance_c < distance_b)
             {
-                elevatorAssigned = (countA <= countB) ? 'A' : 'B';
+                elevator_assigned = 'C';
             }
 
-            if (elevatorAssigned == 'M' && distanceA == distanceC)
+            if (elevator_assigned == 'M' && distance_a == distance_b)
             {
-                elevatorAssigned = (countA <= countC) ? 'A' : 'C';
+                elevator_assigned = (count_a <= count_b) ? 'A' : 'B';
             }
 
-            if (elevatorAssigned == 'M' && distanceB == distanceC)
+            if (elevator_assigned == 'M' && distance_a == distance_c)
             {
-                elevatorAssigned = (countB <= countC) ? 'B' : 'C';
+                elevator_assigned = (count_a <= count_g) ? 'A' : 'C';
             }
 
-            if (elevatorAssigned == 'M')
+            if (elevator_assigned == 'M' && distance_b == distance_c)
             {
-                elevatorAssigned = 'A';
+                elevator_assigned = (count_b <= count_g) ? 'B' : 'C';
             }
 
-            if (elevatorAssigned == 'A')
+            if (elevator_assigned == 'M')
+            {
+                elevator_assigned = 'A';
+            }
+
+            if (elevator_assigned == 'A')
             {
                 printf("Elevator Alpha assigned\n");
-                countRiderA++;
-                statusA = getStatus(statusAInt);
-                if (statusAInt == localInt)
+                counter_rides1++;
+                status_a = getStatus(status_int1);
+                if (status_int1 != local_int)
                 {
-                    printf("");
-                }
-                else
-                {
-                    printf("%c", statusA);
-                    if (localInt > statusAInt)
+                    printf("%c", status_a);
+                    if (local_int > status_int1)
                     {
-                        upToLocal(statusAInt, localInt);
+                        upLocal(status_int1, local_int);
                     }
                     else
                     {
-                        if (localInt < statusAInt)
+                        if (local_int < status_int1)
                         {
-                            downToLocal(statusAInt, localInt);
+                            downLocal(status_int1, local_int);
                         }
                     }
                 }
-                if (destinationInt > localInt)
+                if (destination_int > local_int)
                 {
                     printf("Going up! ");
-                    countUpA++;
-                    getLocal(localInt);
-                    for (i = localInt + 1; i <= destinationInt; i++)
+                    count_up1++;
+                    getLocal(local_int);
+                    for (i = local_int + 1; i <= destination_int; i++)
                     {
                         switch (i)
                         {
@@ -467,17 +472,17 @@ int main()
                         default:
                             break;
                         };
-                        countA++;
+                        count_a++;
                     };
-                    statusA = destinationStatus(destinationInt);
+                    status_a = destinationStatus(destination_int);
                 }
 
-                if (destinationInt < localInt)
+                if (destination_int < local_int)
                 {
                     printf("Going down! ");
-                    countDownA++;
-                    getLocal(localInt);
-                    for (i = localInt - 1; i >= destinationInt; i--)
+                    count_down1++;
+                    getLocal(local_int);
+                    for (i = local_int - 1; i >= destination_int; i--)
                     {
                         switch (i)
                         {
@@ -508,44 +513,40 @@ int main()
                         default:
                             break;
                         }
-                        countA++;
+                        count_a++;
                     };
-                    statusA = destinationStatus(destinationInt);
+                    status_a = destinationStatus(destination_int);
                 }
             }
             else
             {
-                if (elevatorAssigned == 'B')
+                if (elevator_assigned == 'B')
                 {
                     printf("Elevator Beta assigned\n");
-                    countRiderB++;
-                    statusB = getStatus(statusBInt);
-                    if (statusBInt == localInt)
+                    counter_rides2++;
+                    status_b = getStatus(status_int2);
+                    if (status_int2 != local_int)
                     {
-                        printf("");
-                    }
-                    else
-                    {
-                        printf("%c", statusB);
-                        if (localInt > statusBInt)
+                        printf("%c", status_b);
+                        if (local_int > status_int2)
                         {
-                            upToLocal(statusBInt, localInt);
+                            upLocal(status_int2, local_int);
                         }
                         else
                         {
-                            if (localInt < statusBInt)
+                            if (local_int < status_int2)
                             {
-                                downToLocal(statusBInt, localInt);
+                                downLocal(status_int2, local_int);
                             }
                         }
                     }
 
-                    if (destinationInt > localInt)
+                    if (destination_int > local_int)
                     {
                         printf("Going up! ");
-                        countUpB++;
-                        getLocal(localInt);
-                        for (i = localInt + 1; i <= destinationInt; i++)
+                        count_up2++;
+                        getLocal(local_int);
+                        for (i = local_int + 1; i <= destination_int; i++)
                         {
                             switch (i)
                             {
@@ -576,17 +577,17 @@ int main()
                             default:
                                 break;
                             };
-                            countB++;
+                            count_b++;
                         };
-                        statusB = destinationStatus(destinationInt);
+                        status_b = destinationStatus(destination_int);
                     }
 
-                    if (destinationInt < localInt)
+                    if (destination_int < local_int)
                     {
                         printf("Going down! ");
-                        countDownB++;
-                        getLocal(localInt);
-                        for (i = localInt - 1; i >= destinationInt; i--)
+                        count_down2++;
+                        getLocal(local_int);
+                        for (i = local_int - 1; i >= destination_int; i--)
                         {
                             switch (i)
                             {
@@ -617,43 +618,39 @@ int main()
                             default:
                                 break;
                             };
-                            countB++;
+                            count_b++;
                         };
-                        statusB = destinationStatus(destinationInt);
+                        status_b = destinationStatus(destination_int);
                     }
                 }
                 else
                 {
-                    if (elevatorAssigned == 'C')
+                    if (elevator_assigned == 'C')
                     {
-                        countRiderC++;
+                        counter_rides3++;
                         printf("Elevator Gamma assigned\n");
-                        statusC = getStatus(statusCInt);
-                        if (statusCInt == localInt)
+                        status_g = getStatus(status_int3);
+                        if (status_int3 != local_int)
                         {
-                            printf("");
-                        }
-                        else
-                        {
-                            printf("%c", statusC);
-                            if (localInt > statusCInt)
+                            printf("%c", status_g);
+                            if (local_int > status_int3)
                             {
-                                upToLocal(statusCInt, localInt);
+                                upLocal(status_int3, local_int);
                             }
                             else
                             {
-                                if (localInt < statusCInt)
+                                if (local_int < status_int3)
                                 {
-                                    downToLocal(statusCInt, localInt);
+                                    downLocal(status_int3, local_int);
                                 }
                             }
                         }
 
-                        if (destinationInt > localInt)
+                        if (destination_int > local_int)
                         {
                             printf("Going up! ");
-                            countUpC++;
-                            switch (localInt)
+                            count_up3++;
+                            switch (local_int)
                             {
                             case -1:
                                 printf("B");
@@ -682,7 +679,8 @@ int main()
                             default:
                                 break;
                             }
-                            for (i = localInt + 1; i <= destinationInt; i++)
+
+                            for (i = local_int + 1; i <= destination_int; i++)
                             {
                                 switch (i)
                                 {
@@ -713,16 +711,16 @@ int main()
                                 default:
                                     break;
                                 };
-                                countC++;
+                                count_g++;
                             };
-                            statusC = destinationStatus(destinationInt);
+                            status_g = destinationStatus(destination_int);
                         }
 
-                        if (destinationInt < localInt)
+                        if (destination_int < local_int)
                         {
                             printf("Going down! ");
-                            countDownC++;
-                            switch (localInt)
+                            count_down3++;
+                            switch (local_int)
                             {
                             case -1:
                                 printf("B");
@@ -751,7 +749,7 @@ int main()
                             default:
                                 break;
                             }
-                            for (i = localInt - 1; i >= destinationInt; i--)
+                            for (i = local_int - 1; i >= destination_int; i--)
                             {
                                 switch (i)
                                 {
@@ -782,9 +780,9 @@ int main()
                                 default:
                                     break;
                                 }
-                                countC++;
+                                count_g++;
                             };
-                            statusC = destinationStatus(destinationInt);
+                            status_g = destinationStatus(destination_int);
                         }
                     }
                 }
@@ -792,138 +790,173 @@ int main()
             break;
         case 'B':
         case 'b':
-            printf("\n\nElevators Statistics\n\n");
-            printf("ALPHA: %d rides (%d-%d) and %d floors traveled\n", countRiderA, countUpA, countDownA, countA);
-            printf("BETA: %d rides (%d-%d) and %d floors traveled\n", countRiderB, countUpB, countDownB, countB);
-            printf("GAMMA: %d rides (%d-%d) and %d floors traveled\n", countRiderC, countUpC, countDownC, countC);
+            printf("\nElevators statistics:\n\n");
+            printf("ALPHA: %d rides (%d-%d) and %d floors traveled\n", counter_rides1, count_up1, count_down1, count_a);
+            printf("BETA: %d rides (%d-%d) and %d floors traveled\n", counter_rides2, count_up2, count_down2, count_b);
+            printf("GAMMA: %d rides (%d-%d) and %d floors traveled", counter_rides3, count_up3, count_down3, count_g);
             break;
         case 'C':
         case 'c':
-            if (countA >= FLOORS_FOR_INSPECTION || countB >= FLOORS_FOR_INSPECTION || countC >= FLOORS_FOR_INSPECTION)
+            if (count_a >= FLOORS_FOR_INSPECTION || count_b >= FLOORS_FOR_INSPECTION || count_g >= FLOORS_FOR_INSPECTION)
             {
-                if (countA >= FLOORS_FOR_INSPECTION)
-                {
-                    printf("Elevator Alpha: inspection required\n");
-                    inspectionStatusA = 1;
-                    countAFloat = countA;
-                    priceA = calculatePrice(countA);
-                }
 
-                if (countB >= FLOORS_FOR_INSPECTION)
-                {
-                    printf("Elevator Beta: inspection required\n");
-                    inspectionStatusB = 1;
-                    countBFloat = countB;
-                    priceB = calculatePrice(countB);
-                }
-
-                if (countC >= FLOORS_FOR_INSPECTION)
-                {
-                    inspectionStatusC = 1;
-                    printf("Elevator Gama: inspection required\n");
-                    countCFloat = countB;
-                    priceC = calculatePrice(countC);
-                };
-
-                printf("Perform inspection? ");
-                scanf(" %c", &inspection);
-
-                if (inspection == 'Y' || inspection == 'y' || inspection == 'N' || inspection == 'n')
+                if (count_a >= FLOORS_FOR_INSPECTION)
                 {
                     printf("\n");
-                    if (inspection == 'Y' || inspection == 'y')
+                    printf("Elevator Alpha: inspection required");
+                    inspection_status1 = 1;
+                    price_a = calculatePrice(count_a);
+                }
+
+                if (count_b >= FLOORS_FOR_INSPECTION)
+                {
+                    printf("\n");
+                    printf("Elevator Beta: inspection required");
+                    inspection_status2 = 1;
+                    price_b = calculatePrice(count_b);
+                }
+
+                if (count_g >= FLOORS_FOR_INSPECTION)
+                {
+                    inspection_status3 = 1;
+                    printf("\n");
+                    printf("Elevator Gama: inspection required");
+                    price_g = calculatePrice(count_g);
+                }
+                printf("\n\n");
+                do
+                {
+                    printf("Perform inspection? ");
+                    scanf(" %c", &inspection);
+                } while (inspection != 'Y' && inspection != 'y' && inspection != 'N' && inspection != 'n');
+
+                if (inspection == 'Y' || inspection == 'y')
+                {
+                    if (inspection_status1 == 1 && inspection_status2 == 1 && inspection_status3 == 1)
                     {
-                        if (inspectionStatusA == 1 && inspectionStatusB == 1 && inspectionStatusC == 1)
+                        printf("Elevator Alpha inspected! (%.f euros)\n", price_a);
+                        printf("Elevator Beta inspected! (%.f euros)\n", price_b);
+                        printf("Elevator Gama inspected! (%.f euros)\n", price_g);
+                        count_a = 0;
+                        count_b = 0;
+                        count_g = 0;
+                        sum = price_a + price_b + price_g;
+                        total_sum = sum + prev;
+                        inspection_status1 = 0;
+                        inspection_status2 = 0;
+                        inspection_status3 = 0;
+                        printf("\nAccumulated expense: %.f euros", total_sum);
+                        prev = sum;
+                    }
+                    else
+                    {
+                        if (inspection_status1 == 1 && inspection_status2 == 1)
                         {
-                            printf("Elevator Alpha inspected! (%.f euros)\n", priceA);
-                            printf("Elevator Beta inspected! (%.f euros)\n", priceB);
-                            printf("Elevator Gama inspected! (%.f euros)\n", priceC);
-                            countA = 0;
-                            countB = 0;
-                            countC = 0;
-                            sum = priceA + priceB + priceC;
-                            inspectionStatusA = 0;
-                            inspectionStatusB = 0;
-                            inspectionStatusC = 0;
-                            printf("\nAccumulated %.f", sum);
+                            printf("Elevator Alpha inspected! (%.f euros)\n", price_a);
+                            printf("Elevator Beta inspected! (%.f euros)\n", price_b);
+                            count_a = 0;
+                            count_b = 0;
+                            sum = price_a + price_b;
+                            total_sum = sum + prev;
+                            inspection_status1 = 0;
+                            inspection_status2 = 0;
+                            printf("\nAccumulated expense: %.f euros", total_sum);
+                            prev = sum;
                         }
                         else
                         {
-                            if (inspectionStatusA == 1 && inspectionStatusB == 1)
+                            if (inspection_status1 == 1 && inspection_status3 == 1)
                             {
-                                printf("Elevator Alpha inspected! (%.f euros)\n", priceA);
-                                printf("Elevator Beta inspected! (%.f euros)\n", priceB);
-                                countA = 0;
-                                countB = 0;
-                                sum = priceA + priceB;
-                                inspectionStatusA = 0;
-                                inspectionStatusB = 0;
-                                printf("\nAccumulated %.f", sum);
+                                printf("Elevator Alpha inspected! (%.f euros)\n", price_a);
+                                printf("Elevator Gama inspected! (%.f euros)\n", price_g);
+                                count_a = 0;
+                                count_g = 0;
+                                sum = price_a + price_g;
+                                total_sum = sum + prev;
+                                inspection_status1 = 0;
+                                inspection_status3 = 0;
+                                printf("\nAccumulated expense: %.f euros", total_sum);
+                                prev = sum;
                             }
                             else
                             {
-                                if (inspectionStatusA == 1 && inspectionStatusC == 1)
+                                if (inspection_status2 == 1 && inspection_status3 == 1)
                                 {
-                                    printf("Elevator Alpha inspected! (%.f euros)\n", priceA);
-                                    printf("Elevator Gama inspected! (%.f euros)\n", priceC);
-                                    countA = 0;
-                                    countC = 0;
-                                    sum = priceA + priceC;
-                                    inspectionStatusA = 0;
-                                    inspectionStatusC = 0;
-                                    printf("\nAccumulated %.f", sum);
+                                    printf("Elevator Beta inspected! (%.f euros)\n", price_b);
+                                    printf("Elevator Gama inspected! (%.f euros)\n", price_g);
+                                    count_b = 0;
+                                    count_g = 0;
+                                    sum = price_b + price_g;
+                                    total_sum = sum + prev;
+                                    inspection_status2 = 0;
+                                    inspection_status3 = 0;
+                                    printf("\nAccumulated expense: %.f euros", total_sum);
+                                    prev = sum;
                                 }
                                 else
                                 {
-                                    if (inspectionStatusB == 1 && inspectionStatusC == 1)
+                                    if (inspection_status1 == 1)
                                     {
-                                        printf("Elevator Beta inspected! (%.f euros)\n", priceB);
-                                        printf("Elevator Gama inspected! (%.f euros)\n", priceC);
-                                        countB = 0;
-                                        countC = 0;
-                                        sum = priceB + priceC;
-                                        inspectionStatusB = 0;
-                                        inspectionStatusC = 0;
-                                        printf("\nAccumulated %.f", sum);
+                                        printf("Elevator Alpha inspected! (%.f euros)\n", price_a);
+                                        count_a = 0;
+                                        sum = price_a;
+                                        total_sum = sum + prev;
+                                        inspection_status1 = 0;
+                                        printf("\nAccumulated expense: %.f euros", total_sum);
+                                        prev = sum;
+                                    };
+                                    if (inspection_status2 == 1)
+                                    {
+                                        printf("Elevator Beta inspected! (%.f euros)\n", price_b);
+                                        count_b = 0;
+                                        sum = price_b;
+                                        total_sum = sum + prev;
+                                        inspection_status2 = 0;
+                                        printf("\nAccumulated expense: %.f euros", total_sum);
+                                        prev = sum;
                                     }
-                                    else
+                                    if (inspection_status3 == 1)
                                     {
-                                        if (inspectionStatusA == 1)
-                                        {
-                                            printf("Elevator Alpha inspected! (%.f euros)\n", priceA);
-                                            countA = 0;
-                                            sum = priceA;
-                                            inspectionStatusA = 0;
-                                            printf("\nAccumulated %.f", sum);
-                                        };
-                                        if (inspectionStatusB == 1)
-                                        {
-                                            printf("Elevator Beta inspected! (%.f euros)\n", priceB);
-                                            countB = 0;
-                                            sum = priceB;
-                                            inspectionStatusB = 0;
-                                            printf("\nAccumulated %.f", sum);
-                                        }
-                                        if (inspectionStatusC == 1)
-                                        {
-                                            printf("Elevator Gama inspected! (%.f euros)\n", priceC);
-                                            countC = 0;
-                                            sum = priceC;
-                                            inspectionStatusC = 0;
-                                            printf("\nAccumulated %.f", sum);
-                                        }
+                                        printf("Elevator Gama inspected! (%.f euros)\n", price_g);
+                                        count_g = 0;
+                                        sum = price_g;
+                                        total_sum = sum + prev;
+                                        inspection_status3 = 0;
+                                        printf("\nAccumulated expense: %.f euros", total_sum);
+                                        prev = sum;
                                     }
                                 }
                             }
-                        };
+                        }
+                    }
+                }
+                else
+                {
+                    if (inspection == 'N' || inspection == 'n')
+                    {
+                        total_sum = sum + prev;
+
+                        printf("\nAccumulated expense: %.f euros", total_sum);
                     }
                 }
             }
+            else
+            {
+                printf("No required inspection\n\n");
+                printf("Accumulated expense: %.f euros", total_sum);
+            }
 
+            break;
+
+        case 'Q':
+        case 'q':
+            printf("\n");
+            printf("See you later!");
             break;
         default:
             break;
         }
     } while (option != 'Q' && option != 'q');
+
     return 0;
 }
